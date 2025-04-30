@@ -8,7 +8,7 @@ function PharmacyDashboard() {
   const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [results, setResults] = useState([]);
+  const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -24,13 +24,15 @@ function PharmacyDashboard() {
     setLoading(true);
     setError("");
 
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/patients?search=${searchTerm}`)
+    fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/patients?search=${searchTerm}`
+    )
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch");
         return res.json();
       })
       .then((data) => {
-        setResults(data);
+        setPatients(data);
         setLoading(false);
       })
       .catch((err) => {
@@ -39,18 +41,32 @@ function PharmacyDashboard() {
       });
   };
 
-  const markAsDispensed = (id) => {
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/patients/${id}/dispense`, {
-      method: "PUT",
-    })
+  const handleDispense = (patientId, medName) => {
+    fetch(
+      `${
+        import.meta.env.VITE_BACKEND_URL
+      }/api/patients/${patientId}/medications/${medName}/dispense`,
+      {
+        method: "PUT",
+      }
+    )
       .then((res) => {
-        if (!res.ok) throw new Error("Failed to update");
+        if (!res.ok) throw new Error("Failed to dispense medication");
         return res.json();
       })
-      .then((updated) => {
-        // update local state
-        setResults((prev) =>
-          prev.map((p) => (p.patientId === updated.patientId ? updated : p))
+      .then((data) => {
+        // Update local patient state
+        setPatients((prev) =>
+          prev.map((p) =>
+            p.patientId === patientId
+              ? {
+                  ...p,
+                  currentMedications: p.currentMedications.map((med) =>
+                    med.name === medName ? data.medication : med
+                  ),
+                }
+              : p
+          )
         );
       })
       .catch((err) => alert(err.message));
@@ -84,31 +100,66 @@ function PharmacyDashboard() {
       {loading && <p className="text-gray-500">Searching...</p>}
       {error && <p className="text-red-500">{error}</p>}
 
-      <div className="space-y-4">
-        {results.map((p) => (
+      <div className="space-y-8">
+        {patients.map((patient) => (
           <div
-            key={p._id}
-            className="bg-white p-4 rounded shadow max-w-xl"
+            key={patient._id}
+            className="bg-white p-6 rounded-lg shadow max-w-4xl mx-auto"
           >
-            <p><strong>Name:</strong> {p.name}</p>
-            <p><strong>ID:</strong> {p.patientId}</p>
-            <p><strong>Medications:</strong> {p.currentMedications.join(", ")}</p>
-            <p>
-              <strong>Status:</strong>{" "}
-              {p.dispensed ? (
-                <span className="text-green-600">Dispensed</span>
-              ) : (
-                <span className="text-red-500">Not dispensed</span>
-              )}
+            <h2 className="text-xl font-bold text-indigo-600 mb-2">
+              {patient.name}
+            </h2>
+            <p className="text-sm text-gray-600 mb-4">
+              <strong>Patient ID:</strong> {patient.patientId}
             </p>
-            {!p.dispensed && (
-              <button
-                onClick={() => markAsDispensed(p.patientId)}
-                className="mt-3 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-              >
-                Mark as Dispensed
-              </button>
-            )}
+
+            <div className="space-y-4">
+              {patient.currentMedications.map((med, index) => (
+                <div key={index} className="border-b pb-4">
+                  <p>
+                    <strong>Medication:</strong> {med.name}
+                  </p>
+                  <p>
+                    <strong>Prescribed Quantity:</strong>{" "}
+                    {med.prescribedQuantity}
+                  </p>
+                  <p>
+                    <strong>Prescribed By:</strong> {med.prescribedBy}
+                  </p>
+                  <p>
+                    <strong>Dosage:</strong>{" "}
+                    {`${med.dosage.amount}, ${med.dosage.frequency}, ${med.dosage.instructions}`}
+                  </p>
+                  <p>
+                    <strong>Refills Left:</strong> {med.refillsLeft}
+                  </p>
+                  <p>
+                    <strong>Status:</strong>{" "}
+                    {med.dispensed ? (
+                      <span className="text-green-600">
+                        Dispensed{" "}
+                        {med.dispensedAt
+                          ? `at ${new Date(med.dispensedAt).toLocaleString()}`
+                          : ""}
+                      </span>
+                    ) : (
+                      <span className="text-red-500">Not Dispensed</span>
+                    )}
+                  </p>
+
+                  {med.refillsLeft > 0 && (
+                    <button
+                      onClick={() =>
+                        handleDispense(patient.patientId, med.name)
+                      }
+                      className="mt-3 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                    >
+                      Dispense
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         ))}
       </div>

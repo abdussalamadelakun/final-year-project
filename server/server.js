@@ -11,6 +11,15 @@ app.use(express.json());
 const patientRoutes = require("./routes/patients");
 app.use("/api/patients", patientRoutes);
 
+const authRoutes = require("./routes/auth");
+app.use("/api/auth", authRoutes);
+
+const adminRoutes = require("./routes/admin");
+app.use("/api/admin", adminRoutes);
+
+app.use("/api/facility", require("./routes/facility"));
+
+
 // Connect to DB & start server
 mongoose
   .connect(process.env.MONGO_URI, {
