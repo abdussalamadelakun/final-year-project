@@ -1,34 +1,56 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { users } from "./mockUsers";
 import { AuthContext } from "./context/AuthContext";
+import axios from "axios";
 
 function LoginPage() {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        formData
+      );
+      const { user, token } = response.data;
 
-    const user = users.find(
-      (u) =>
-        u.username === formData.username && u.password === formData.password
-    );
+      login({ ...user, token }); // Save token and user to context
 
-    if (user) {
-      login(user);
-      if (user.role === "provider") {
+      if (user.role === "admin") {
+        navigate("/admin/dashboard");
+      } else if (user.role === "facilityAdmin") {
+        // Fetch facility type to determine hospital or pharmacy
+        const facilityRes = await axios.get(
+          `http://localhost:5000/api/facility/${user.facilityId}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        const facilityType = facilityRes.data.facility?.type;
+        console.log("Facility type:", facilityType);
+
+        if (facilityType === "hospital") {
+          navigate("/hospital-admin");
+        } else if (facilityType === "pharmacy") {
+          navigate("/facility/pharmacy-dashboard");
+        } else {
+          setError("Unknown facility type");
+        }
+      } else if (user.role === "provider") {
         navigate("/provider");
       } else if (user.role === "pharmacy") {
         navigate("/pharmacy");
+      } else {
+        setError("Unsupported user role");
       }
-    } else {
-      setError("Invalid credentials. Please try again.");
+    } catch (err) {
+      console.error("Login error:", err);
+      setError("Invalid credentials or server error.");
     }
   };
 
@@ -38,16 +60,17 @@ function LoginPage() {
         <h2 className="text-xl font-bold mb-4 text-center text-indigo-600">
           Sign In
         </h2>
-
-        {error && <p className="text-red-500 mb-2 text-sm text-center">{error}</p>}
+        {error && (
+          <p className="text-red-500 mb-2 text-sm text-center">{error}</p>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
-            type="text"
-            name="username"
-            placeholder="Username"
+            type="email"
+            name="email"
+            placeholder="Email"
             onChange={handleChange}
-            value={formData.username}
+            value={formData.email}
             className="w-full border px-3 py-2 rounded-lg"
             required
           />

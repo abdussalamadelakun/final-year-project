@@ -4,6 +4,12 @@ import QRPage from "./QRPage";
 import ProviderDashboard from "./HealthCareProvider/ProviderDashboard";
 import ProviderPatientDetails from "./HealthCareProvider/ProviderPatientDetails";
 import PharmacyDashboard from "./PharmacyDashboard";
+import AdminDashboard from "./admin/AdminDashboard";
+import CreateFacility from "./admin/CreateFacility";
+import HospitalAdminDashboard from "./FacilityAdmin/HospitalAdminDashboard";
+import RegisterStaff from "./FacilityAdmin/RegisterStaff";
+import RegisterPatient from "./FacilityAdmin/RegisterPatient";
+import PharmacyAdminDashboard from "./FacilityAdmin/PharmacyAdminDashboard";
 
 function App() {
   return (
@@ -16,6 +22,15 @@ function App() {
         element={<ProviderPatientDetails />}
       />
       <Route path="/pharmacy" element={<PharmacyDashboard />} />
+      <Route path="/admin/dashboard" element={<AdminDashboard />} />
+      <Route path="/admin/create-facility" element={<CreateFacility />} />
+      <Route path="/hospital-admin" element={<HospitalAdminDashboard />} />
+      <Route path="/facility/register-staff" element={<RegisterStaff />} />
+      <Route path="/facility/register-patient" element={<RegisterPatient />} />
+      <Route
+        path="/facility/pharmacy-dashboard"
+        element={<PharmacyAdminDashboard />}
+      />
     </Routes>
   );
 }

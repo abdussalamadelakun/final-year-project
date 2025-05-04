@@ -4,6 +4,20 @@ const bcrypt = require("bcryptjs");
 const Facility = require("../models/Facility");
 const User = require("../models/User");
 
+router.get("/facilities", async (req, res) => {
+    try {
+      const facilities = await Facility.find()
+        .populate("adminUser", "username email")
+        .sort({ createdAt: -1 });
+  
+      res.json(facilities);
+    } catch (err) {
+      console.error("Error fetching facilities:", err);
+      res.status(500).json({ message: "Server error" });
+    }
+  });
+  
+
 router.post("/facilities/register", async (req, res) => {
     const { name, type, location, admin } = req.body;
   

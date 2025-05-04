@@ -75,7 +75,6 @@ function ProviderPatientDetails() {
     });
   };
 
-  
   const handleSave = () => {
     fetch(`${import.meta.env.VITE_BACKEND_URL}/api/patients/${id}`, {
       method: "PUT",
@@ -280,7 +279,7 @@ function ProviderPatientDetails() {
 
           <button
             onClick={() => navigate("/provider")}
-            className="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400"
+            className="bg-gray-300 text-white px-4 py-2 rounded-lg hover:bg-gray-400"
           >
             Back to Dashboard
           </button>
