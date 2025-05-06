@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import ProductLogo from "./ProductLogo";
 
 function QRPage() {
   const location = useLocation();
@@ -35,10 +36,9 @@ function QRPage() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-6">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-md p-6">
-        <h1 className="text-2xl font-bold text-center mb-4 text-indigo-600">
-          Patient QR Info
-        </h1>
+      <div className="w-full max-w-sm bg-white rounded-md shadow-md p-6">
+      <ProductLogo />
+        <h1 className="text-2xl font-bold mb-4 text-black-600">Patient Info</h1>
 
         {loading && (
           <p className="text-center text-gray-500">Loading patient info...</p>
@@ -54,6 +54,16 @@ function QRPage() {
             <p>
               <strong>Patient ID:</strong> {patient.patientId}
             </p>
+            {patient.emergencyContact && (
+              <p>
+                <strong>Emergency Contact:</strong> {patient.emergencyContact}
+              </p>
+            )}
+            {patient.dateOfBirth && (
+              <p>
+                <strong>Date of Birth:</strong> {patient.dateOfBirth}
+              </p>
+            )}
             <p>
               <strong>Blood Type:</strong> {patient.bloodType}
             </p>
@@ -69,7 +79,7 @@ function QRPage() {
 
         <div className="mt-6 flex justify-center">
           <button
-            className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition"
+            className="bg-indigo-600 text-white w-full px-4 py-2 rounded-lg hover:bg-indigo-700 transition"
             onClick={() => navigate("/login")}
           >
             Sign in for more details

@@ -74,7 +74,7 @@ const RegisterStaff = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6">
+    <div className="max-w-md mx-auto p-6 pt-20">
       {facilityType && (
         <Link
           to={dashboardPath}
@@ -84,7 +84,7 @@ const RegisterStaff = () => {
         </Link>
       )}
 
-      <h2 className="text-2xl font-bold mb-4 text-center text-blue-700">
+      <h2 className="text-2xl font-bold mb-4 text-blue-700">
         Register New Staff
       </h2>
       {error && (

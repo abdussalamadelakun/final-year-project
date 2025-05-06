@@ -26,8 +26,16 @@ router.post(
   authMiddleware,
   requireRole(["facilityAdmin"]),
   async (req, res) => {
-    const { name, bloodType, allergies, chronicConditions, currentInfections } =
-      req.body;
+    const {
+      name,
+      bloodType,
+      allergies,
+      chronicConditions,
+      currentInfections,
+      email,
+      emergencyContact,
+      dateOfBirth,
+    } = req.body;
 
     if (!name) {
       return res.status(400).json({ message: "Name is required" });
@@ -52,6 +60,9 @@ router.post(
 
       const patient = new Patient({
         name,
+        email,
+        emergencyContact,
+        dateOfBirth,
         bloodType,
         allergies,
         chronicConditions,
@@ -109,6 +120,11 @@ router.get("/:id/public", async (req, res) => {
     const publicData = {
       name: patient.name,
       patientId: patient.patientId,
+      email: patient.email,
+      emergencyContact: patient.emergencyContact,
+      dateOfBirth: patient.dateOfBirth
+        ? patient.dateOfBirth.toISOString().split("T")[0]
+        : null,
       bloodType: patient.bloodType,
       allergies: patient.allergies,
       chronicConditions: patient.chronicConditions,

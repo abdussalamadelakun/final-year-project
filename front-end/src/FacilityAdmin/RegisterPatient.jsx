@@ -1,21 +1,24 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+import { Link, useNavigate } from "react-router-dom";
 
 const RegisterPatient = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: "",
+    email: "",
+    dateOfBirth: "",
+    emergencyContact: "",
     bloodType: "",
     allergies: [""],
     chronicConditions: [""],
     currentInfections: [""],
   });
+
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
-
   const token = localStorage.getItem("token");
-  console.log("Token:", token);
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,6 +53,9 @@ const RegisterPatient = () => {
       setSuccess(`Patient ${response.data.patient.name} registered!`);
       setFormData({
         name: "",
+        email: "",
+        dateOfBirth: "",
+        emergencyContact: "",
         bloodType: "",
         allergies: [""],
         chronicConditions: [""],
@@ -65,9 +71,17 @@ const RegisterPatient = () => {
 
   return (
     <div className="max-w-md mx-auto p-6">
-      <h2 className="text-2xl font-bold text-blue-700 mb-4 text-center">
-        Register New Patient
-      </h2>
+      <Link
+        to="/hospital-admin"
+        className="inline-block mb-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+      >
+        ← Back to Dashboard
+      </Link>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold text-blue-700 text-center">
+          Register New Patient
+        </h2>
+      </div>
 
       {error && (
         <div className="bg-red-100 text-red-700 p-2 mb-4 rounded">{error}</div>
@@ -87,6 +101,32 @@ const RegisterPatient = () => {
           value={formData.name}
           onChange={handleChange}
           required
+        />
+
+        <input
+          type="email"
+          name="email"
+          placeholder="Email Address"
+          className="w-full p-2 border rounded"
+          value={formData.email}
+          onChange={handleChange}
+        />
+
+        <input
+          type="text"
+          name="emergencyContact"
+          placeholder="Emergency Contact"
+          className="w-full p-2 border rounded"
+          value={formData.emergencyContact}
+          onChange={handleChange}
+        />
+
+        <input
+          type="date"
+          name="dateOfBirth"
+          className="w-full p-2 border rounded"
+          value={formData.dateOfBirth}
+          onChange={handleChange}
         />
 
         <input

@@ -46,9 +46,31 @@ const PharmacyAdminDashboard = () => {
     fetchDashboardInfo();
   }, [token]);
 
+  const handleDeleteStaff = async (staffId) => {
+    if (!window.confirm("Are you sure you want to delete this staff member?"))
+      return;
+
+    try {
+      await axios.delete(
+        `http://localhost:5000/api/facility/staff/${staffId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setStaff((prev) => prev.filter((s) => s._id !== staffId));
+    } catch (err) {
+      console.error("Failed to delete staff:", err);
+      alert("Error deleting staff member");
+    }
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <LogoutButton />
+      <div className="flex justify-end mb-4">
+        <LogoutButton />
+      </div>
       <h2 className="text-3xl font-bold text-green-700 mb-4 text-center">
         Pharmacy Admin Dashboard
       </h2>
@@ -57,14 +79,14 @@ const PharmacyAdminDashboard = () => {
 
       {facility && (
         <div className="bg-gray-100 p-4 rounded mb-6 shadow">
-          <h3 className="text-xl font-semibold">Facility Info</h3>
-          <p>
+          <h3 className="text-xl font-semibold">Facility Information</h3>
+          <p className="capitalize">
             <strong>Name:</strong> {facility.name}
           </p>
-          <p>
+          <p className="capitalize">
             <strong>Type:</strong> {facility.type}
           </p>
-          <p>
+          <p className="capitalize">
             <strong>Location:</strong> {facility.location}
           </p>
         </div>
@@ -81,20 +103,29 @@ const PharmacyAdminDashboard = () => {
       </div>
 
       {staff.length === 0 ? (
-        <p>No staff registered yet.</p>
-      ) : (
-        <ul className="space-y-2">
-          {staff.map((user) => (
-            <li
-              key={user._id}
-              className="p-2 bg-white rounded shadow border flex justify-between"
-            >
-              <span>{user.username}</span>
-              <span className="text-gray-500 text-sm">{user.email}</span>
-            </li>
-          ))}
-        </ul>
-      )}
+  <p>No staff registered yet.</p>
+) : (
+  <ul className="space-y-2">
+    {staff.map((user) => (
+      <li
+        key={user._id}
+        className="p-2 bg-white rounded shadow border flex justify-between items-center"
+      >
+        <div>
+          <div>{user.username}</div>
+          <div className="text-gray-500 text-sm">{user.email}</div>
+        </div>
+        <button
+          onClick={() => handleDeleteStaff(user._id)}
+          className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-sm"
+        >
+          Delete
+        </button>
+      </li>
+    ))}
+  </ul>
+)}
+
     </div>
   );
 };

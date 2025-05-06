@@ -9,7 +9,7 @@ const medicationSchema = new mongoose.Schema({
   dosage: {
     amount: { type: String, required: true },
     frequency: { type: String, required: true },
-    instructions: { type: String, required: true }
+    instructions: { type: String, required: true },
   },
   refillable: { type: Boolean, default: false },
   refillsLeft: { type: Number, default: 0 },
@@ -17,6 +17,12 @@ const medicationSchema = new mongoose.Schema({
 
 const patientSchema = new mongoose.Schema({
   name: { type: String, required: true },
+  email: {
+    type: String,
+    match: [/^\S+@\S+\.\S+$/, "Please use a valid email address"],
+  },
+  emergencyContact: { type: String },
+  dateOfBirth: { type: Date },
   bloodType: String,
   allergies: [String],
   chronicConditions: [String],

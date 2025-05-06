@@ -58,7 +58,7 @@ const CreateFacility = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-10 p-6 bg-white rounded-xl shadow">
+    <div className="max-w-xl mx-auto mt-10 p-6 bg-white rounded-md ">
       <Link
         to="/admin/dashboard"
         className="mb-4 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"

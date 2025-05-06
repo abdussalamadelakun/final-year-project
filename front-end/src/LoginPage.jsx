@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
 import axios from "axios";
+import ProductLogo from "./ProductLogo";
 
 function LoginPage() {
   const { login } = useContext(AuthContext);
@@ -56,8 +57,12 @@ function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
-      <div className="bg-white p-6 rounded-xl shadow-md w-full max-w-sm">
-        <h2 className="text-xl font-bold mb-4 text-center text-indigo-600">
+      <div className="bg-white p-6 rounded-md shadow-md w-full max-w-sm">
+        <div className="flex justify-center">
+          <ProductLogo />
+        </div>
+
+        <h2 className="text-xl font-bold mb-4 text-center text-black-600">
           Sign In
         </h2>
         {error && (
@@ -71,7 +76,7 @@ function LoginPage() {
             placeholder="Email"
             onChange={handleChange}
             value={formData.email}
-            className="w-full border px-3 py-2 rounded-lg"
+            className="w-full border px-3 py-2 rounded"
             required
           />
           <input
@@ -80,12 +85,12 @@ function LoginPage() {
             placeholder="Password"
             onChange={handleChange}
             value={formData.password}
-            className="w-full border px-3 py-2 rounded-lg"
+            className="w-full border px-3 py-2 rounded"
             required
           />
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700"
+            className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700"
           >
             Login
           </button>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 function ProviderPatientDetails() {
@@ -96,12 +96,18 @@ function ProviderPatientDetails() {
   if (error) return <div className="p-6 text-red-600">{error}</div>;
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <h2 className="text-2xl font-bold text-indigo-700 mb-4">
+    <div className="min-h-screen bg-white-50 p-6 w-full max-w-3xl mx-auto">
+      <Link
+        to="/provider"
+        className="inline-block mb-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+      >
+        ← Back to Dashboard
+      </Link>
+      <h2 className="text-2xl font-bold text-blue-600 mb-4">
         Edit Patient: {formData.name}
       </h2>
 
-      <div className="bg-white p-6 rounded-xl shadow max-w-4xl space-y-6">
+      <div className="bg-white p-6 rounded  max-w-4xl space-y-6">
         {/* Basic Patient Info */}
         <div>
           <label className="block font-semibold">Blood Type:</label>
@@ -110,7 +116,7 @@ function ProviderPatientDetails() {
             name="bloodType"
             value={formData.bloodType}
             onChange={handleChange}
-            className="w-full border px-3 py-2 rounded-lg mt-1"
+            className="w-full border px-3 py-2 rounded mt-1"
           />
         </div>
 
@@ -128,7 +134,7 @@ function ProviderPatientDetails() {
                 allergies: e.target.value.split(",").map((s) => s.trim()),
               }))
             }
-            className="w-full border px-3 py-2 rounded-lg mt-1"
+            className="w-full border px-3 py-2 rounded mt-1"
           />
         </div>
 
@@ -148,7 +154,7 @@ function ProviderPatientDetails() {
                   .map((s) => s.trim()),
               }))
             }
-            className="w-full border px-3 py-2 rounded-lg mt-1"
+            className="w-full border px-3 py-2 rounded mt-1"
           />
         </div>
 
@@ -168,23 +174,21 @@ function ProviderPatientDetails() {
                   .map((s) => s.trim()),
               }))
             }
-            className="w-full border px-3 py-2 rounded-lg mt-1"
+            className="w-full border px-3 py-2 rounded mt-1"
           />
         </div>
 
         {/* Medications Section */}
         <div className="space-y-6">
-          <h3 className="text-xl font-semibold text-indigo-600">
-            Medications:
-          </h3>
+          <h3 className="text-xl font-semibold text-blue-600">Medications:</h3>
           {formData.currentMedications?.map((med, index) => (
-            <div key={index} className="border rounded-lg p-4 space-y-2">
+            <div key={index} className="border-none rounded p-4 space-y-2">
               <input
                 type="text"
                 placeholder="Medication Name"
                 value={med.name}
                 onChange={(e) => handleMedChange(index, "name", e.target.value)}
-                className="w-full border px-3 py-2 rounded-lg"
+                className="w-full border px-3 py-2 rounded"
               />
               <input
                 type="number"
@@ -193,7 +197,7 @@ function ProviderPatientDetails() {
                 onChange={(e) =>
                   handleMedChange(index, "prescribedQuantity", e.target.value)
                 }
-                className="w-full border px-3 py-2 rounded-lg"
+                className="w-full border px-3 py-2 rounded"
               />
               <input
                 type="text"
@@ -202,7 +206,7 @@ function ProviderPatientDetails() {
                 onChange={(e) =>
                   handleMedChange(index, "prescribedBy", e.target.value)
                 }
-                className="w-full border px-3 py-2 rounded-lg"
+                className="w-full border px-3 py-2 rounded"
               />
               <input
                 type="text"
@@ -211,7 +215,7 @@ function ProviderPatientDetails() {
                 onChange={(e) =>
                   handleMedChange(index, "amount", e.target.value)
                 }
-                className="w-full border px-3 py-2 rounded-lg"
+                className="w-full border px-3 py-2 rounded"
               />
               <input
                 type="text"
@@ -220,7 +224,7 @@ function ProviderPatientDetails() {
                 onChange={(e) =>
                   handleMedChange(index, "frequency", e.target.value)
                 }
-                className="w-full border px-3 py-2 rounded-lg"
+                className="w-full border px-3 py-2 rounded"
               />
               <input
                 type="text"
@@ -229,7 +233,7 @@ function ProviderPatientDetails() {
                 onChange={(e) =>
                   handleMedChange(index, "instructions", e.target.value)
                 }
-                className="w-full border px-3 py-2 rounded-lg"
+                className="w-full border px-3 py-2 rounded"
               />
               <div className="flex items-center gap-2">
                 <label>Refillable:</label>
@@ -249,7 +253,7 @@ function ProviderPatientDetails() {
                   onChange={(e) =>
                     handleMedChange(index, "refillsLeft", e.target.value)
                   }
-                  className="w-full border px-3 py-2 rounded-lg"
+                  className="w-full border px-3 py-2 rounded"
                 />
               )}
               <button
@@ -262,32 +266,26 @@ function ProviderPatientDetails() {
           ))}
           <button
             onClick={addMedication}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
+            className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
           >
             Add Medication
           </button>
         </div>
 
         {/* Save Button */}
-        <div className="flex gap-4">
+        <div className="flex justify-end mb-4">
           <button
             onClick={handleSave}
-            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
           >
             Save Changes
           </button>
-
-          <button
-            onClick={() => navigate("/provider")}
-            className="bg-gray-300 text-white px-4 py-2 rounded-lg hover:bg-gray-400"
-          >
-            Back to Dashboard
-          </button>
         </div>
-
-        {saved && (
-          <p className="text-green-600 mt-3">Changes saved successfully!</p>
-        )}
+        <div className="flex justify-end mb-4">
+          {saved && (
+            <p className="text-green-600 mt-3">Changes saved successfully!</p>
+          )}
+        </div>
       </div>
     </div>
   );

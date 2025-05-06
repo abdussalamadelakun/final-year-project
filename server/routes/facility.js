@@ -83,7 +83,7 @@ router.get(
 router.get(
   "/:id",
   authMiddleware,
-  requireRole(["facilityAdmin", "admin"]),
+  requireRole(["facilityAdmin", "admin", "provider", "pharmacy"]),
   async (req, res) => {
     try {
       const facility = await Facility.findById(req.params.id);
@@ -94,6 +94,38 @@ router.get(
       res.json({ facility });
     } catch (err) {
       console.error("Error fetching facility:", err);
+      res.status(500).json({ message: "Server error" });
+    }
+  }
+);
+
+router.delete(
+  "/staff/:staffId",
+  authMiddleware,
+  requireRole(["admin", "facilityAdmin"]),
+  async (req, res) => {
+    const { staffId } = req.params;
+
+    try {
+      const user = await User.findById(staffId);
+      if (!user) return res.status(404).json({ message: "Staff not found" });
+      console.log("Requesting user:", req.user);
+      console.log("Target staff's facilityId:", user.facilityId?.toString());
+
+      // Optional: only allow deletion if the requester manages the same facility
+      if (
+        req.user.role === "facilityAdmin" &&
+        user.facilityId?.toString() !== req.user.facilityId
+      ) {
+        return res
+          .status(403)
+          .json({ message: "Not authorized to delete this staff" });
+      }
+
+      await User.findByIdAndDelete(staffId);
+      res.json({ message: "Staff deleted successfully" });
+    } catch (err) {
+      console.error("Error deleting staff:", err);
       res.status(500).json({ message: "Server error" });
     }
   }
