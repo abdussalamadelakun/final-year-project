@@ -17,6 +17,11 @@ const medicationSchema = new mongoose.Schema({
 
 const patientSchema = new mongoose.Schema({
   name: { type: String, required: true },
+  gender: {
+    type: String,
+    enum: ["male", "female", "other"],
+    required: true,
+  },
   email: {
     type: String,
     match: [/^\S+@\S+\.\S+$/, "Please use a valid email address"],

@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
 import LogoutButton from "./components/LogoutButton";
 import axios from "axios";
+import ProductLogo from "./ProductLogo";
+
 
 function PharmacyDashboard() {
   const { user } = useContext(AuthContext);
@@ -91,19 +93,20 @@ function PharmacyDashboard() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center px-4 py-8">
       <div className="w-full max-w-3xl">
-        <div className="flex justify-end mb-4">
+        <div className="flex justify-between items-center mb-8">
+          <ProductLogo />
           <LogoutButton />
         </div>
 
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-indigo-700">
+          <h1 className="text-2xl font-bold text-blue-700">
             Welcome, {user?.username}
           </h1>
         </div>
 
         {facility && (
           <div className="bg-white p-4 rounded shadow mb-6">
-            <h2 className="text-lg font-semibold text-indigo-700 mb-2">
+            <h2 className="text-lg font-semibold text-blue-700 mb-2">
               Facility Details
             </h2>
             <p className="capitalize"><strong>Name:</strong> {facility.name}</p>
@@ -139,7 +142,7 @@ function PharmacyDashboard() {
               key={patient._id}
               className="bg-white p-6 rounded-lg shadow"
             >
-              <h2 className="text-xl font-bold text-indigo-600 mb-2">
+              <h2 className="text-xl font-bold text-blue-600 mb-2">
                 {patient.name}
               </h2>
               <p className="text-sm text-gray-600 mb-4">

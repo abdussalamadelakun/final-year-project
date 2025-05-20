@@ -28,6 +28,7 @@ router.post(
   async (req, res) => {
     const {
       name,
+      gender,
       bloodType,
       allergies,
       chronicConditions,
@@ -60,6 +61,7 @@ router.post(
 
       const patient = new Patient({
         name,
+        gender,
         email,
         emergencyContact,
         dateOfBirth,
@@ -120,6 +122,7 @@ router.get("/:id/public", async (req, res) => {
     const publicData = {
       name: patient.name,
       patientId: patient.patientId,
+      gender: patient.gender,
       email: patient.email,
       emergencyContact: patient.emergencyContact,
       dateOfBirth: patient.dateOfBirth

@@ -48,12 +48,17 @@ function QRPage() {
 
         {patient && (
           <div>
-            <p>
+            <p className="capitalize">
               <strong>Name:</strong> {patient.name}
             </p>
             <p>
               <strong>Patient ID:</strong> {patient.patientId}
             </p>
+            {patient.gender && (
+              <p className="capitalize">
+                <strong>Gender:</strong> {patient.gender}
+              </p>
+            )}
             {patient.emergencyContact && (
               <p>
                 <strong>Emergency Contact:</strong> {patient.emergencyContact}

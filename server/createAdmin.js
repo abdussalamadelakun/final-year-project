@@ -13,7 +13,7 @@ const seedAdmin = async () => {
     const existingAdmin = await User.findOne({ role: "admin" });
 
     if (existingAdmin) {
-      console.log("❌ Admin already exists.");
+      console.log("Admin already exists.");
       return process.exit();
     }
 
@@ -27,7 +27,7 @@ const seedAdmin = async () => {
       facilityId: null,
     });
 
-    console.log("✅ Admin created successfully:");
+    console.log("Admin created successfully:");
     console.log(`Email: ${admin.email}`);
     console.log(`Password: admin123`);
     process.exit();

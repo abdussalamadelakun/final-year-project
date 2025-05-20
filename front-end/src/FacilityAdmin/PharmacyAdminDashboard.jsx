@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import LogoutButton from "../components/LogoutButton";
+import ProductLogo from "../ProductLogo";
 
 const PharmacyAdminDashboard = () => {
   const [facility, setFacility] = useState(null);
@@ -68,10 +69,11 @@ const PharmacyAdminDashboard = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-between items-center mb-8">
+        <ProductLogo />
         <LogoutButton />
       </div>
-      <h2 className="text-3xl font-bold text-green-700 mb-4 text-center">
+      <h2 className="text-3xl font-bold text-blue-700 mb-4 text-center">
         Pharmacy Admin Dashboard
       </h2>
 
@@ -96,7 +98,7 @@ const PharmacyAdminDashboard = () => {
         <h3 className="text-xl font-semibold">Staff</h3>
         <Link
           to="/facility/register-staff"
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
         >
           Register Staff
         </Link>

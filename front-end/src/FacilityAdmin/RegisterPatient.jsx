@@ -7,6 +7,7 @@ const RegisterPatient = () => {
 
   const [formData, setFormData] = useState({
     name: "",
+    gender: "",
     email: "",
     dateOfBirth: "",
     emergencyContact: "",
@@ -53,6 +54,7 @@ const RegisterPatient = () => {
       setSuccess(`Patient ${response.data.patient.name} registered!`);
       setFormData({
         name: "",
+        gender: "",
         email: "",
         dateOfBirth: "",
         emergencyContact: "",
@@ -102,6 +104,20 @@ const RegisterPatient = () => {
           onChange={handleChange}
           required
         />
+<select
+  name="gender"
+  className="w-full p-2 border rounded"
+  value={formData.gender}
+  onChange={handleChange}
+  required
+>
+  <option value="">Select Gender</option>
+  <option value="male">Male</option>
+  <option value="female">Female</option>
+  <option value="other">Other</option>
+</select>
+
+  
 
         <input
           type="email"

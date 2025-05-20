@@ -322,6 +322,7 @@ const AdminDashboard = () => {
               <thead>
                 <tr className="bg-gray-100">
                   <th className="p-2 border text-left">Name</th>
+                  <th className="p-2 border text-left">Gender</th>
                   <th className="p-2 border text-left">Email</th>
                   <th className="p-2 border text-left">DOB</th>
                   <th className="p-2 border text-left">Emergency Contact</th>
@@ -333,6 +334,7 @@ const AdminDashboard = () => {
                 {filteredPatients.map((p) => (
                   <tr key={p._id}>
                     <td className="p-2 border">{p.name}</td>
+                    <td className="p-2 border">{p.gender || "-"}</td>
                     <td className="p-2 border">{p.email || "—"}</td>
                     <td className="p-2 border">
                       {p.dateOfBirth

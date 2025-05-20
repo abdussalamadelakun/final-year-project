@@ -5,7 +5,7 @@ const router = express.Router();
 const User = require("../models/User");
 
 const jwt = require("jsonwebtoken");
-const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret"; // set in .env for production
+const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret"; 
 
 
 router.post("/login", async (req, res) => {
@@ -31,7 +31,7 @@ router.post("/login", async (req, res) => {
         { expiresIn: "1d" }
       );
 
-    // Remove password before sending response
+   
     const { password: pw, ...userWithoutPassword } = user;
 
     res.json({ user: userWithoutPassword, token });

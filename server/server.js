@@ -7,7 +7,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Routes
 const patientRoutes = require("./routes/patients");
 app.use("/api/patients", patientRoutes);
 
@@ -19,14 +18,13 @@ app.use("/api/admin", adminRoutes);
 
 app.use("/api/facility", require("./routes/facility"));
 
-
 // Connect to DB & start server
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    ssl: true, // <-- add this explicitly
-    tlsAllowInvalidCertificates: true, // <- ONLY if testing locally, remove in production
+    ssl: true, 
+    tlsAllowInvalidCertificates: true, 
   })
   .then(() => {
     console.log("Connected to MongoDB");

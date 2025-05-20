@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import LogoutButton from "../components/LogoutButton";
+import ProductLogo from "../ProductLogo";
 
 const HospitalAdminDashboard = () => {
   const [facility, setFacility] = useState(null);
@@ -59,7 +60,8 @@ const HospitalAdminDashboard = () => {
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-between items-center mb-8">
+        <ProductLogo />
         <LogoutButton />
       </div>
 
